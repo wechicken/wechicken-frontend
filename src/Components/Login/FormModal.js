@@ -14,6 +14,8 @@ import LogoBox from "./LogoBox";
 import BtnSubmit from "../Buttons/BtnSubmit";
 import { API_URL } from "../../config";
 
+// import { useAxios } from "../../hooks/useAxios";
+
 const FormModal = ({
   setModalOn,
   googleInput,
@@ -29,6 +31,15 @@ const FormModal = ({
   const [agreementStatus, setAgreementStatus] = useState(true);
   const [submitActivate, setSubmitActivate] = useState(false);
   const dispatch = useDispatch();
+
+  //useAxios
+  // const { response, runAxios } = useAxios({
+  //   method: "post",
+  //   endpoint: "/auth/additional",
+  //   headers: {
+  //     "Content-Type": "multipart/form-data",
+  //   },
+  // });
 
   const [
     handleInputImage,
@@ -57,24 +68,28 @@ const FormModal = ({
           "Content-Type": "multipart/form-data",
         },
       });
-      if (res.data.token) {
+
+      //useAxios
+      // await runAxios({ body: { formData } });
+
+      if (res.token) {
         setExistingUser(true);
         sessionStorage.setItem(
           "USER",
           JSON.stringify({
-            token: res.data.token,
-            profile: res.data.profile,
-            myGroupStatus: res.data.myGroupStatus,
-            myNth: res.data.nth,
+            token: res.token,
+            profile: res.profile,
+            myGroupStatus: res.myGroupStatus,
+            myNth: res.nth,
           })
         );
         setTimeout(() => {
           setLoginSuccess(false);
           setModalOn(false);
         }, 1000);
-        dispatch(loginToken(res.data.token));
-        dispatch(userProfileImg(res.data.profile));
-        dispatch(myGroupStatus(res.data.myGroupStatus));
+        dispatch(loginToken(res.token));
+        dispatch(userProfileImg(res.profile));
+        dispatch(myGroupStatus(res.myGroupStatus));
       }
     } catch (error) {
       alert("에러가 발생했습니다");
