@@ -1,9 +1,9 @@
-import React from "react";
-import styled from "styled-components";
-import { flexCenter } from "../../Styles/Theme";
-import ProfileIcon from "../ProfileIcon";
-import BtnLike from "../Buttons/BtnLike";
-import BtnEditOrDelete from "../Buttons/BtnEditOrDelete";
+import React from 'react'
+import styled from 'styled-components'
+import { flexCenter } from '../../Styles/Theme'
+import ProfileIcon from '../ProfileIcon'
+import BtnLike from '../Buttons/BtnLike'
+import BtnEditOrDelete from '../Buttons/BtnEditOrDelete'
 
 const Card = ({
   post,
@@ -20,12 +20,8 @@ const Card = ({
     <>
       <Container space={space} width={width} search={search}>
         <CardWrap type={post.type} onClick={() => window.open(`${post.link}`)}>
-          <ImageBox img={post.thumbnail || "/Images/blogDefaultImg.png"} />
-          <img
-            className="blogLogo"
-            alt="blog_logo"
-            src={`/Images/${post.type}.png`}
-          />
+          <ImageBox img={post.thumbnail || '/Images/blogDefaultImg.png'} />
+          <img className="blogLogo" alt="blog_logo" src={`/Images/${post.type}.png`} />
           <ContentsBox>
             <Profile>
               <ProfileIcon size={40} img={post.user_profile} />
@@ -37,29 +33,27 @@ const Card = ({
             <Title search={search}>{post.title}</Title>
             {!!search && (
               <Subtitle>
-                {post.subtitle?.length < 125
-                  ? post.subtitle
-                  : post.subtitle?.substr(0, 125) + ".."}
+                {post.subtitle?.length > 125 ? `${post.subtitle.substr(0, 125)}...` : post.subtitle}
               </Subtitle>
             )}
           </ContentsBox>
         </CardWrap>
         <Tags>{post.date}</Tags>
         <ButtonWrap>
-          {typeof post.like === "boolean" ? (
+          {typeof post.like === 'boolean' ? (
             <>
               <BtnLike
                 id={post.id}
                 status={post.like}
                 handleRemoveCard={handleRemoveCard}
-                type={"likes"}
+                type={'likes'}
                 setActiveAlert={setActiveAlert}
               />
               <BtnLike
                 id={post.id}
                 status={post.bookmark}
                 handleRemoveCard={handleRemoveCard}
-                type={"bookmarks"}
+                type={'bookmarks'}
                 setActiveAlert={setActiveAlert}
               />
             </>
@@ -74,10 +68,10 @@ const Card = ({
         </ButtonWrap>
       </Container>
     </>
-  );
-};
+  )
+}
 
-export default Card;
+export default Card
 
 const Container = styled.div`
   width: ${({ width }) => width}px;
@@ -96,7 +90,7 @@ const Container = styled.div`
   &:hover {
     transform: translate(0, -10px);
   }
-`;
+`
 
 const CardWrap = styled.div`
   width: 100%;
@@ -109,22 +103,21 @@ const CardWrap = styled.div`
     width: 26px;
     height: 26px;
     border-radius: 50%;
-    display: ${({ type }) =>
-      ["velog", "medium"].includes(type) ? "block" : "none"};
+    display: ${({ type }) => (['velog', 'medium'].includes(type) ? 'block' : 'none')};
   }
-`;
+`
 
 const ImageBox = styled.div`
   height: 40%;
   background: url(${({ img }) => img});
   background-size: cover;
   background-position: center;
-`;
+`
 
 const ContentsBox = styled.div`
   height: 55%;
   padding: 15px;
-`;
+`
 
 const Profile = styled.div`
   height: 30%;
@@ -146,7 +139,7 @@ const Profile = styled.div`
       color: #2d2b2b;
     }
   }
-`;
+`
 
 const Title = styled.div`
   margin: 5px 0;
@@ -155,7 +148,7 @@ const Title = styled.div`
   line-height: 20px;
   margin-bottom: 2px;
   color: #2d2b2b;
-`;
+`
 
 const Subtitle = styled.div`
   height: 30%;
@@ -163,14 +156,14 @@ const Subtitle = styled.div`
   line-height: 20px;
   margin-bottom: 2px;
   color: #2d2b2b;
-`;
+`
 
 const Tags = styled.div`
   position: absolute;
   bottom: 16px;
   left: 16px;
   font-size: 14px;
-`;
+`
 
 const ButtonWrap = styled.div`
   width: 80px;
@@ -178,4 +171,4 @@ const ButtonWrap = styled.div`
   position: absolute;
   bottom: 12px;
   right: 16px;
-`;
+`
