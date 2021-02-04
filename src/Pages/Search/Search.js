@@ -13,12 +13,10 @@ const Search = () => {
   const [posts, setPosts] = useState([])
   const searchKeyword = useSelector((state) => state.searchKeywordReducer)
   const [keyword, setKeyword] = useState(searchKeyword)
-  const prevKeyword = usePrevious(keyword)
-  const [isSearching, setIsSearching] = useState(true)
+  const [prevKeyword, setPrevKeyword] = useState('')
+  const [isSearching, setIsSearching] = useState(false)
   const paginationRef = useRef(null)
   const [page, setPage] = usePagination(paginationRef.current, posts.length)
-  const [isFinal, setFinal] = useState(false)
-  const prevPage = usePrevious(page)
 
   const dispatch = useDispatch()
 
@@ -32,18 +30,12 @@ const Search = () => {
 
   useEffect(() => {
     const handleDebouncingWords = setTimeout(() => {
-      setIsSearching(true)
-      // 1. keyword === prevKeyword && prevPage !== page => pagination
-      // 2. keyword !== prevKeyword => search, page = 0
-
-      const isTheSameKeyword = keyword === prevKeyword
-      keyword && FetchSearchingWords({ isTheSameKeyword, prevPage, page })
+      keyword && setIsSearching(true)
     }, 500)
 
     if (!keyword) {
       window.scrollTo(0, 0)
       setPosts([])
-      setFinal(false)
       setPage(0)
     }
 
@@ -51,11 +43,18 @@ const Search = () => {
       clearTimeout(handleDebouncingWords)
     }
     // eslint-disable-next-line
-  }, [keyword, page])
+  }, [keyword])
 
-  const FetchSearchingWords = ({ isTheSameKeyword, prevPage, page }) => {
-    if (prevPage > page) return
+  useEffect(() => {
+    isSearching && fetchSearchingWord()
+  }, [isSearching])
 
+  useEffect(() => {
+    keyword && fetchSearchingWord()
+  }, [page])
+
+  const fetchSearchingWord = () => {
+    const isTheSameKeyword = keyword === prevKeyword
     axios
       .get(
         `${SEARCH_URL}/search?keyword=${keyword}&page=${
@@ -68,17 +67,16 @@ const Search = () => {
         }
       )
       .then((res) => {
-        !res.data.posts.length && setFinal(true)
         setPosts((prevPosts) => {
           const posts = isTheSameKeyword ? prevPosts : []
           return [...posts, ...res.data.posts]
         })
+        setPrevKeyword(keyword)
         setIsSearching(false)
       })
 
-    setPage((prev) => (isTheSameKeyword ? prev : 0))
-    setFinal((prev) => (isTheSameKeyword ? prev : false))
-    if (!isTheSameKeyword) window.scrollTo(0, 0)
+    setPage((prevPage) => (isTheSameKeyword ? prevPage : 0))
+    !isTheSameKeyword && window.scrollTo(0, 0)
   }
 
   return (
@@ -94,7 +92,7 @@ const Search = () => {
               </>
             ))
           : searchingStatus(keyword, isSearching)}
-        {!!posts.length && !isFinal && <div ref={paginationRef} style={{ height: '10px' }} />}
+        {!!posts.length && <div ref={paginationRef} style={{ height: '10px' }} />}
       </PostWrap>
     </>
   )
