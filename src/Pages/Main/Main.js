@@ -45,12 +45,6 @@ function Main() {
 
   return (
     <>
-      <Alert
-        type="notice"
-        alertMessage="죄송합니다. 현재 서비스 점검중입니다. 빠른 시간안에 복구하겠습니다"
-        submitBtn={"확인"}
-      />
-
       {isLoginActive && <Login setModalOn={setLoginActive} />}
       {isActiveAlert && (
         <Alert
