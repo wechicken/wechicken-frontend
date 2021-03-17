@@ -15,14 +15,12 @@ import theme, { flexCenter, MainContentCards } from "../../Styles/Theme";
 function Main() {
   const [posts, setPosts] = useState([]);
   const [isActiveAlert, setActiveAlert] = useState(false);
-  const [isActiveNotice, setIsActiveNotice] = useState(false);
   const [isLoginActive, setLoginActive] = useState(false);
   const ref = useRef(null);
   const [page, _] = usePagination(ref.current);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    setIsActiveNotice(true);
   }, []);
 
   useEffect(() => {
@@ -45,26 +43,19 @@ function Main() {
     setLoginActive(true);
   };
 
-  const closeAlert = () => {
-    setIsActiveNotice(false);
-  };
   return (
     <>
-      {isActiveNotice && (
-        <Alert
-          type="notice"
-          alertMessage="죄송합니다. 현재 서비스 점검중입니다. 빠른 시간안에 복구하겠습니다"
-          submitBtn={"확인"}
-          setActiveAlert={setIsActiveNotice}
-        />
-      )}
+      <Alert
+        type="notice"
+        alertMessage="죄송합니다. 현재 서비스 점검중입니다. 빠른 시간안에 복구하겠습니다"
+        submitBtn={"확인"}
+      />
 
       {isLoginActive && <Login setModalOn={setLoginActive} />}
       {isActiveAlert && (
         <Alert
           setActiveAlert={setActiveAlert}
           alertMessage={"로그인이 필요한 서비스입니다."}
-          excuteFunction={closeAlert}
           submitBtn={"로그인"}
           closeBtn={"취소"}
         />
