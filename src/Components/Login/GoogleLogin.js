@@ -6,6 +6,7 @@ import { loginToken, userProfileImg } from "../../store/actions/loginAction";
 import { myGroupStatus } from "../../store/actions/myGroupStatusAction";
 import { useDispatch } from "react-redux";
 import { API_URL } from "../../config";
+import { useAxios } from "../../hooks/useAxios";
 
 let auth2;
 
@@ -73,7 +74,7 @@ const GoogleLogin = ({
         setTimeout(() => {
           setLoginSuccess(false);
           setModalOn(false);
-         },1000);
+        }, 1000);
         dispatch(loginToken(res.data.token));
         dispatch(userProfileImg(res.data.profile));
         dispatch(myGroupStatus(res.data.myGroupStatus));

@@ -8,8 +8,8 @@ import MainBanner from "./MainBanner";
 import Alert from "../../Components/Alert";
 import Login from "../../Components/Login/Login";
 import usePagination from "../../hooks/usePagination";
-import { API_URL } from "../../config";
 import { POSTS_LIMIT } from "../../constants";
+import { useAxios } from "../../hooks/useAxios";
 import theme, { flexCenter, MainContentCards } from "../../Styles/Theme";
 
 function Main() {
@@ -20,25 +20,22 @@ function Main() {
   const ref = useRef(null);
   const [page, _] = usePagination(ref.current);
 
+  const { response, runAxios: getMainPosts } = useAxios({
+    method: "GET",
+    endpoint: `/main?page=${page}&size=${POSTS_LIMIT}`,
+    headers: sessionStorage.getItem("USER") && {
+      Authorization: JSON.parse(sessionStorage.getItem("USER"))?.token,
+    },
+  });
+
   useEffect(() => {
+    getMainPosts();
     window.scrollTo(0, 0);
     setIsActiveNotice(true);
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await axios.get(
-        `${API_URL}/main?page=${page}&size=${POSTS_LIMIT}`,
-        sessionStorage.getItem("USER") && {
-          headers: {
-            Authorization: JSON.parse(sessionStorage.getItem("USER"))?.token,
-          },
-        }
-      );
-      setPosts((prevState) => [...prevState, ...res.data.posts]);
-    };
-
-    fetchData();
+    response && setPosts((prevState) => [...prevState, ...response.posts]);
   }, [page]);
 
   const handleSetLoginActive = () => {

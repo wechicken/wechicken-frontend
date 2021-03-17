@@ -1,16 +1,23 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
-import { API_URL } from "../../config";
 import theme from "../../Styles/Theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as blankHeart } from "@fortawesome/free-regular-svg-icons";
 import { faHeart as filledHeart } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark as blankBookmarks } from "@fortawesome/free-regular-svg-icons";
 import { faBookmark as filledBookmarks } from "@fortawesome/free-solid-svg-icons";
+import { useAxios } from "../../hooks/useAxios";
 
 const HeartIcon = ({ id, status, handleRemoveCard, type, setActiveAlert }) => {
   const [isLiked, setLiked] = useState(status);
+
+  const { runAxios: postBookmarkOrLike } = useAxios({
+    method: "post",
+    endpoint: `/posts/${type}/${id}`,
+    headers: {
+      Authorization: JSON.parse(sessionStorage.getItem("USER"))?.token,
+    },
+  });
 
   const handleLikeStatus = () => {
     setLiked(!isLiked);
@@ -25,20 +32,13 @@ const HeartIcon = ({ id, status, handleRemoveCard, type, setActiveAlert }) => {
       setActiveAlert(true);
     }
   };
-
   const fetchLikeStatus = () => {
-    axios({
-      method: "post",
-      url: `${API_URL}/posts/${type}/${id}`,
-      headers: {
-        Authorization: JSON.parse(sessionStorage.getItem("USER"))?.token,
-      },
-    });
+    postBookmarkOrLike();
   };
 
   return (
     <>
-      <Container type={type} onClick={() => checkLoginStatus()}>
+      <Container type={type} onClick={checkLoginStatus}>
         <BlankIcon isLiked={isLiked}>
           <FontAwesomeIcon
             className="blank"

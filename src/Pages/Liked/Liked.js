@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import theme, { flexCenter } from "../../Styles/Theme";
 import Card from "../../Components/Card/Card";
-import { API_URL } from "../../config";
+import { useAxios } from "../../hooks/useAxios";
 
 const Liked = () => {
   const [selectedMenu, setSelectedMenu] = useState("bookmarks");
   const [posts, setPosts] = useState([]);
 
+  const { runAxios: getBookmarkOrLikePosts } = useAxios({
+    method: "GET",
+    endpoint: `/posts/${selectedMenu}`,
+    headers: {
+      Authorization: JSON.parse(sessionStorage.getItem("USER"))?.token,
+    },
+  });
+
+  const _getBookmarkOrLikePosts = async () => {
+    const res = await getBookmarkOrLikePosts();
+    setPosts(res.posts);
+  };
+
   useEffect(() => {
-    setPosts([]);
-    axios({
-      method: "get",
-      url: `${API_URL}/posts/${selectedMenu}`,
-      headers: {
-        Authorization: JSON.parse(sessionStorage.getItem("USER"))?.token,
-      },
-    }).then((res) => {
-      setPosts(res.data.posts);
-    });
+    _getBookmarkOrLikePosts();
   }, [selectedMenu]);
 
   const handleRemoveCard = (inputId, type) => {
@@ -48,11 +51,11 @@ const Liked = () => {
           >
             좋아한 포스트
           </li>
-          <UnderBar selectedMenu={selectedMenu}></UnderBar>
+          <UnderBar selectedMenu={selectedMenu} />
         </div>
       </ActiveTab>
       <Contents>
-        {posts?.map((post, i) => {
+        {posts?.map((post) => {
           return (
             <Card
               post={post}

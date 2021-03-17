@@ -85,8 +85,8 @@ const Container = styled.div`
   cursor: pointer;
   @media (max-width: 1450px) {
     width: ${({ search, width }) => (search ? width : 250)}px;
-    }
   }
+
   &:hover {
     transform: translate(0, -10px);
   }
