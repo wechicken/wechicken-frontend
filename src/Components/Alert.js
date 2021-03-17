@@ -3,6 +3,7 @@ import styled from "styled-components";
 import theme, { flexCenter } from "../Styles/Theme";
 
 const Alert = ({
+  type,
   alertMessage,
   setSelectedMenu,
   selectedMenu,
@@ -20,7 +21,7 @@ const Alert = ({
 
   const handleExecuteFunction = () => {
     excuteFunction();
-    setActiveAlert(false);
+    type !== "notice" && setActiveAlert(false);
   };
 
   return (
@@ -28,18 +29,22 @@ const Alert = ({
       <AlertContainer>
         <span className="alertMessage">{alertMessage}</span>
         <div className="btnContainer">
-          <button
-            onClick={() => {
-              setActiveAlert(false);
-              selectedMenu === "로그아웃" && setSelectedMenu("");
-            }}
-            className="closeBtn"
-          >
-            {closeBtn}
-          </button>
-          <button onClick={handleExecuteFunction} className="submitBtn">
-            {submitBtn}
-          </button>
+          {type !== "notice" && (
+            <>
+              <button
+                onClick={() => {
+                  setActiveAlert(false);
+                  selectedMenu === "로그아웃" && setSelectedMenu("");
+                }}
+                className="closeBtn"
+              >
+                {closeBtn}
+              </button>
+              <button onClick={handleExecuteFunction} className="submitBtn">
+                {submitBtn}
+              </button>
+            </>
+          )}
         </div>
       </AlertContainer>
     </Wrap>
@@ -71,7 +76,11 @@ const AlertContainer = styled.div`
   z-index: 10;
 
   .alertMessage {
-    font-size: 14px;
+    margin: 0 auto;
+    width: 280px;
+    font-size: 17px;
+    line-height: 25px;
+    text-align: center;
     font-family: ${theme.fontContent};
     color: ${theme.fontColor};
   }
