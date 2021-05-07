@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import styled from "styled-components";
-import theme, { flexCenter } from "../Styles/Theme";
+import React, { useEffect } from 'react'
+import styled from 'styled-components'
+import theme, { flexCenter } from '../Styles/Theme'
 
 const Alert = ({
   type,
@@ -13,45 +13,42 @@ const Alert = ({
   closeBtn,
 }) => {
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden'
     return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, []);
+      document.body.style.overflow = 'unset'
+    }
+  }, [])
 
   const handleExecuteFunction = () => {
-    excuteFunction();
-    type !== "notice" && setActiveAlert(false);
-  };
+    excuteFunction()
+    type !== 'notice' && setActiveAlert(false)
+  }
 
   return (
     <Wrap>
       <AlertContainer>
-        <span className="alertMessage">{alertMessage}</span>
-        <div className="btnContainer">
-          {type !== "notice" && (
+        <span className='alertMessage'>{alertMessage}</span>
+        <div className='btnContainer'>
+          {type !== 'notice' && (
             <>
-              <button
+              <CloseBtn
                 onClick={() => {
-                  setActiveAlert(false);
-                  selectedMenu === "로그아웃" && setSelectedMenu("");
+                  setActiveAlert(false)
+                  selectedMenu === '로그아웃' && setSelectedMenu('')
                 }}
-                className="closeBtn"
               >
                 {closeBtn}
-              </button>
-              <button onClick={handleExecuteFunction} className="submitBtn">
-                {submitBtn}
-              </button>
+              </CloseBtn>
+              <SubmitBtn onClick={handleExecuteFunction}>{submitBtn}</SubmitBtn>
             </>
           )}
         </div>
       </AlertContainer>
     </Wrap>
-  );
-};
+  )
+}
 
-export default Alert;
+export default Alert
 
 const Wrap = styled.div`
   height: 100%;
@@ -63,9 +60,10 @@ const Wrap = styled.div`
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.3);
   z-index: 10;
-`;
+`
 
 const AlertContainer = styled.div`
+  ${flexCenter};
   width: 400px;
   padding: 50px;
   display: flex;
@@ -77,7 +75,7 @@ const AlertContainer = styled.div`
 
   .alertMessage {
     margin: 0 auto;
-    width: 280px;
+    width: 100%;
     font-size: 17px;
     line-height: 25px;
     text-align: center;
@@ -91,19 +89,36 @@ const AlertContainer = styled.div`
     margin-top: 20px;
   }
 
-  button {
-    width: 50px;
-    height: 30px;
-    margin-right: 10px;
-    border: none;
-    outline: none;
-    border-radius: 8px;
-    background-color: ${theme.orange};
-    color: ${theme.white};
-    cursor: pointer;
-  }
+  @media (max-width: 375px) {
+    width: 300px;
+    padding: 25px;
+    align-items: center;
 
-  button:hover {
-    opacity: 0.8;
+    .alertMessage {
+      width: 100%;
+      font-size: 16px;
+    }
   }
-`;
+`
+const CloseBtn = styled.button`
+  ${flexCenter}
+  width: 150px;
+  height: 40px;
+  margin: 10px;
+  border-radius: 8px;
+  background-color: ${theme.lightGrey};
+  color: ${theme.white};
+  cursor: pointer;
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+  }
+  @media (max-width: 375px) {
+    width: 100px;
+  }
+`
+
+const SubmitBtn = styled(CloseBtn)`
+  background-color: ${theme.orange};
+`

@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import axios from "axios";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-regular-svg-icons";
-import { API_URL } from "../../../config";
-import theme, { flexCenter } from "../../../Styles/Theme";
-import useUpload from "../../../hooks/useUpload";
-import Alert from "../../../Components/Alert";
-import EditForm from "./Components/EditForm";
-import { userProfileImg } from "../../../store/actions/loginAction";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import axios from 'axios'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit } from '@fortawesome/free-regular-svg-icons'
+import { API_URL } from '../../../config'
+import theme, { flexCenter } from '../../../Styles/Theme'
+import useUpload from '../../../hooks/useUpload'
+import Alert from '../../../Components/Alert'
+import EditForm from './Components/EditForm'
+import { userProfileImg } from '../../../store/actions/loginAction'
+import { useDispatch, useSelector } from 'react-redux'
 
 function ProfileColumn({ myProfile, deleteProfileImg }) {
   const [
@@ -17,41 +17,41 @@ function ProfileColumn({ myProfile, deleteProfileImg }) {
     editedProfileImg,
     ProfileIcon,
     defaultImg,
-  ] = useUpload();
-  const { wecode_nth, user_name, gmail } = myProfile;
-  const [isActiveAlert, setActiveAlert] = useState(false);
-  const [isEdit, setisEdit] = useState(false);
-  const [deleteEvent, setDeleteEvent] = useState("");
-  const [contentValue, setContentValue] = useState("");
-  const dispatch = useDispatch();
+  ] = useUpload()
+  const { wecode_nth, user_name, gmail } = myProfile
+  const [isActiveAlert, setActiveAlert] = useState(false)
+  const [isEdit, setisEdit] = useState(false)
+  const [deleteEvent, setDeleteEvent] = useState('')
+  const [contentValue, setContentValue] = useState('')
+  const dispatch = useDispatch()
   const userProfileImgVariable = useSelector(
     (state) => state.userProfileReducer
-  );
+  )
 
   useEffect(() => {
     if (editedProfileImg) {
-      modifyProfileImg();
+      modifyProfileImg()
     }
     // eslint-disable-next-line
-  }, [editedProfileImg]);
+  }, [editedProfileImg])
 
   useEffect(() => {
-    setContentValue(myProfile.blog_address);
-  }, [myProfile.blog_address]);
+    setContentValue(myProfile.blog_address)
+  }, [myProfile.blog_address])
 
   const activeEditForm = () => {
-    setisEdit(!isEdit);
-  };
+    setisEdit(!isEdit)
+  }
 
   const handleSubmit = (e) => {
-    setisEdit(!isEdit);
-    myProfile.blog_address !== contentValue && modifyBlogUrl();
-    e.preventDefault();
-  };
+    setisEdit(!isEdit)
+    myProfile.blog_address !== contentValue && modifyBlogUrl()
+    e.preventDefault()
+  }
 
   const handleContentValue = (e) => {
-    setContentValue(e.target.value);
-  };
+    setContentValue(e.target.value)
+  }
 
   const modifyBlogUrl = () => {
     myProfile.blog_address = contentValue
@@ -60,74 +60,74 @@ function ProfileColumn({ myProfile, deleteProfileImg }) {
       { blog_address: contentValue },
       {
         headers: {
-          Authorization: JSON.parse(sessionStorage.getItem("USER"))?.token,
+          Authorization: JSON.parse(sessionStorage.getItem('USER'))?.token,
         },
       }
-    );
-  };
+    )
+  }
 
   const modifyProfileImg = () => {
-    const formData = new FormData();
-    formData.append("user_thumbnail", defaultImg);
+    const formData = new FormData()
+    formData.append('user_thumbnail', defaultImg)
     axios
       .post(`${API_URL}/mypage`, formData, {
         headers: {
-          Authorization: JSON.parse(sessionStorage.getItem("USER"))?.token,
-          "content-type": "multipart/form-data",
+          Authorization: JSON.parse(sessionStorage.getItem('USER'))?.token,
+          'content-type': 'multipart/form-data',
         },
       })
       .then((res) => {
-        if (res.statusText === "OK") {
-          dispatch(userProfileImg(res.data.profile));
+        if (res.statusText === 'OK') {
+          dispatch(userProfileImg(res.data.profile))
           sessionStorage.setItem(
-            "USER",
+            'USER',
             JSON.stringify({
-              ...JSON.parse(sessionStorage.getItem("USER")),
+              ...JSON.parse(sessionStorage.getItem('USER')),
               profile: res.data.profile,
             })
-          );
+          )
         }
-      });
-  };
+      })
+  }
 
   return (
     <ProfileContainer>
       {isActiveAlert && (
         <Alert
           setActiveAlert={setActiveAlert}
-          alertMessage={"프로필 이미지를 삭제하시겠습니까?"}
+          alertMessage={'프로필 이미지를 삭제하시겠습니까?'}
           excuteFunction={() => {
-            deleteProfileImg(deleteEvent);
+            deleteProfileImg(deleteEvent)
           }}
-          submitBtn={"확인"}
-          closeBtn={"취소"}
+          submitBtn={'확인'}
+          closeBtn={'취소'}
         />
       )}
       <ProfilePhoto>
         <ProfileIcon size={131} img={userProfileImgVariable} />
         <label>
           <input
-            type="file"
+            type='file'
             onChange={handleEditProfileImg}
             onSubmit={modifyProfileImg}
           />
           <UploadPhotoBtn>이미지 업로드</UploadPhotoBtn>
         </label>
         <DeletePhotoBtn
-          data-name="user_thumbnail"
+          data-name='user_thumbnail'
           onClick={(e) => {
-            setDeleteEvent(e.target.dataset.name);
-            setActiveAlert(true);
+            setDeleteEvent(e.target.dataset.name)
+            setActiveAlert(true)
           }}
         >
           이미지 제거
         </DeletePhotoBtn>
       </ProfilePhoto>
       <ProfileContents>
-        <span className="userNth">{wecode_nth}기</span>
-        <h1 className="userName">{user_name}</h1>
-        <div className="userInfo">
-          <span className="email">{gmail}</span>
+        <span className='userNth'>{wecode_nth}기</span>
+        <h1 className='userName'>{user_name}</h1>
+        <div className='userInfo'>
+          <span className='email'>{gmail}</span>
           {isEdit ? (
             <EditForm
               contentValue={contentValue}
@@ -135,12 +135,12 @@ function ProfileColumn({ myProfile, deleteProfileImg }) {
               handleSubmit={handleSubmit}
             />
           ) : (
-            <div className="userBlogAddress">
+            <div className='userBlogAddress'>
               <span>
                 {contentValue}
                 <FontAwesomeIcon
                   onClick={activeEditForm}
-                  className="editBtn"
+                  className='editBtn'
                   icon={faEdit}
                 />
               </span>
@@ -149,10 +149,10 @@ function ProfileColumn({ myProfile, deleteProfileImg }) {
         </div>
       </ProfileContents>
     </ProfileContainer>
-  );
+  )
 }
 
-export default ProfileColumn;
+export default ProfileColumn
 
 const ProfileContainer = styled.section`
   width: 1020px;
@@ -163,7 +163,13 @@ const ProfileContainer = styled.section`
   box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.04);
   border-radius: 47px;
   background: #ffffff;
-`;
+
+  @media (max-width: 375px) {
+    flex-direction: column;
+    width: 330px;
+    height: 500px;
+  }
+`
 
 const ProfilePhoto = styled.div`
   width: 320px;
@@ -181,7 +187,11 @@ const ProfilePhoto = styled.div`
   input {
     display: none;
   }
-`;
+
+  @media (max-width: 375px) {
+    border: none;
+  }
+`
 
 const UploadPhotoBtn = styled.div`
   width: 164px;
@@ -197,7 +207,7 @@ const UploadPhotoBtn = styled.div`
     transition: 0.3s ease-in-out;
     background: rgb(255, 153, 0);
   }
-`;
+`
 
 const DeletePhotoBtn = styled(UploadPhotoBtn)`
   background-color: transparent;
@@ -207,7 +217,7 @@ const DeletePhotoBtn = styled(UploadPhotoBtn)`
     transition: 0.3s ease-in-out;
     background: rgba(255, 153, 0, 0.2);
   }
-`;
+`
 
 const ProfileContents = styled.div`
   width: 60%;
@@ -255,4 +265,8 @@ const ProfileContents = styled.div`
     background-color: ${theme.orange};
     color: ${theme.white};
   }
-`;
+
+  @media (max-width: 375px) {
+    width: 100%;
+  }
+`

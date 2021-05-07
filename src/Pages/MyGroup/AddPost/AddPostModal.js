@@ -1,44 +1,44 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import dayjs from "dayjs";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { API_URL } from "../../../config";
-import InputTheme from "../../../Components/Buttons/InputTheme";
-import BtnSubmit from "../../../Components/Buttons/BtnSubmit";
-import theme from "../../../Styles/Theme";
-import axios from "axios";
-import Dimmer from "../../../Components/Dimmer";
+import React, { useState, useEffect } from 'react'
+import styled from 'styled-components'
+import dayjs from 'dayjs'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { API_URL } from '../../../config'
+import InputTheme from '../../../Components/Buttons/InputTheme'
+import BtnSubmit from '../../../Components/Buttons/BtnSubmit'
+import theme from '../../../Styles/Theme'
+import axios from 'axios'
+import Dimmer from '../../../Components/Dimmer'
 
 const AddPostModal = ({ name, closeModal, handleMyGroupPageData }) => {
-  const [submitActivate, setSubmitActivate] = useState(false);
-  const [isDateFormatCorrect, setDateFormatCorrect] = useState(undefined);
+  const [submitActivate, setSubmitActivate] = useState(false)
+  const [isDateFormatCorrect, setDateFormatCorrect] = useState(undefined)
   const [values, setValues] = useState({
-    title: "",
-    link: "",
-    date: "",
-  });
+    title: '',
+    link: '',
+    date: '',
+  })
 
   const handleInputValues = (value, name) => {
     setValues({
       ...values,
       [name]: value,
-    });
-  };
+    })
+  }
 
   const fetchNewPost = () => {
     axios
       .post(`${API_URL}/mygroup/addpost`, values, {
         headers: {
-          Authorization: JSON.parse(sessionStorage.getItem("USER"))?.token,
+          Authorization: JSON.parse(sessionStorage.getItem('USER'))?.token,
         },
       })
       .then((res) => {
-        res.statusText === "OK" && alert("성공적으로 추가 되었습니다.");
-        handleMyGroupPageData(res);
-        closeModal(false);
-      });
-  };
+        res.statusText === 'OK' && alert('성공적으로 추가 되었습니다.')
+        handleMyGroupPageData(res)
+        closeModal(false)
+      })
+  }
 
   // useEffect(() => {
   //   if (values.title && values.link) {
@@ -53,98 +53,104 @@ const AddPostModal = ({ name, closeModal, handleMyGroupPageData }) => {
   useEffect(() => {
     values.title && values.link && isDateFormatCorrect
       ? setSubmitActivate(true)
-      : setSubmitActivate(false);
-  }, [values.title, values.link, isDateFormatCorrect]);
+      : setSubmitActivate(false)
+  }, [values.title, values.link, isDateFormatCorrect])
 
   useEffect(() => {
-    if (values.date.length === 10 && values.date.split(".").length === 3) {
-      if (values.date.replace(/\./g, "") <= dayjs().format("YYYYMMDD")) {
-        setDateFormatCorrect(true);
-      } 
+    if (values.date.length === 10 && values.date.split('.').length === 3) {
+      if (values.date.replace(/\./g, '') <= dayjs().format('YYYYMMDD')) {
+        setDateFormatCorrect(true)
+      }
     } else {
-      setDateFormatCorrect(false);
+      setDateFormatCorrect(false)
     }
-  }, [values.date]);
+  }, [values.date])
 
   return (
     <>
       <Dimmer />
       <Container>
-        <Title>
-          <img className="logoImage" alt="logo" src="/Images/logo.png" />
-          <div className="titleTextWrap">
-            <span className="logoText">{">"}wechicken</span>
-            <span className="titleText">새로운 포스트를 추가해주세요</span>
-          </div>
-        </Title>
         <FontAwesomeIcon
           onClick={() => closeModal(false)}
-          className="BtnClose"
+          className='BtnClose'
           icon={faTimes}
         />
+        {window.innerWidth > 375 && (
+          <>
+            <Title>
+              <img className='logoImage' alt='logo' src='/Images/logo.png' />
+              <div className='titleTextWrap'>
+                <span className='logoText'>{'>'}wechicken</span>
+                <span className='titleText'>새로운 포스트를 추가해주세요</span>
+              </div>
+            </Title>
+          </>
+        )}
         <Contents>
-          <Description>
-            <h1>{name}님을 응원합니다</h1>
-            <p>
-              일부 사이트를 제외하고는 <br></br>
-              직접 포스팅을 등록해 주셔야 합니다 <br></br>
-            </p>
+          {window.innerWidth > 375 && (
+            <Description>
+              <h1>{name}님을 응원합니다</h1>
+              <p>
+                일부 사이트를 제외하고는 <br></br>
+                직접 포스팅을 등록해 주셔야 합니다 <br></br>
+              </p>
 
-            <p>
-              빠른 시일 안에 <br></br>
-              모든 블로그 자동 업데이트 서비스를 <br></br>
-              지원할 수 있도록 하겠습니다.
-            </p>
+              <p>
+                빠른 시일 안에 <br></br>
+                모든 블로그 자동 업데이트 서비스를 <br></br>
+                지원할 수 있도록 하겠습니다.
+              </p>
 
-            <p>
-              매 주, 하나 둘씩 블로그를 작성하다보면<br></br>
-              어느새 훌쩍 성장한 자신의 모습을<br></br>
-              발견할 수 있을거예요.
-            </p>
+              <p>
+                매 주, 하나 둘씩 블로그를 작성하다보면<br></br>
+                어느새 훌쩍 성장한 자신의 모습을<br></br>
+                발견할 수 있을거예요.
+              </p>
 
-            <p>
-              (•ө•)♡ 화이팅! <br></br>
-            </p>
-          </Description>
+              <p>
+                (•ө•)♡ 화이팅! <br></br>
+              </p>
+            </Description>
+          )}
           <InputFormWrap>
             <InputTheme
               width={170}
-              type={"포스팅 제목"}
+              type={'포스팅 제목'}
               handleType={handleInputValues}
-              placeholder="예시)2차 프로젝트 회고록"
+              placeholder='예시)2차 프로젝트 회고록'
               size={14}
-              name={"title"}
+              name={'title'}
             />
             <InputTheme
               width={170}
-              type={"포스팅 링크"}
+              type={'포스팅 링크'}
               handleType={handleInputValues}
-              placeholder={"링크를 복사, 붙여넣어주세요"}
+              placeholder={'링크를 복사, 붙여넣어주세요'}
               size={14}
-              name={"link"}
+              name={'link'}
             />
             <InputTheme
               width={170}
-              type={"작성날짜"}
+              type={'작성날짜'}
               handleType={handleInputValues}
-              placeholder={"예시)2020.09.20"}
+              placeholder={'예시)2020.09.20'}
               size={14}
-              name={"date"}
+              name={'date'}
               validationCheck={isDateFormatCorrect}
             />
           </InputFormWrap>
         </Contents>
         <BtnSubmit
-          btnText="추가"
+          btnText='추가'
           executeFunction={fetchNewPost}
           submitActivate={submitActivate}
-        ></BtnSubmit>
+        />
       </Container>
     </>
-  );
-};
+  )
+}
 
-export default AddPostModal;
+export default AddPostModal
 
 const Container = styled.div`
   display: flex;
@@ -169,7 +175,13 @@ const Container = styled.div`
     color: #828282;
     cursor: pointer;
   }
-`;
+
+  @media (max-width: 375px) {
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+  }
+`
 
 const Title = styled.div`
   display: flex;
@@ -198,7 +210,7 @@ const Title = styled.div`
       color: ${theme.orange};
     }
   }
-`;
+`
 
 const Description = styled.div`
   width: 230px;
@@ -217,13 +229,17 @@ const Description = styled.div`
     line-height: 18px;
     font-size: 12px;
   }
-`;
+`
 
 const Contents = styled.div`
   margin: 10px 95px;
   display: flex;
   justify-content: space-between;
-`;
+
+  @media (max-width: 375px) {
+    margin-top: 60px;
+  }
+`
 
 const InputFormWrap = styled.form`
   height: 250px;
@@ -235,4 +251,8 @@ const InputFormWrap = styled.form`
     margin-left: 12px;
     color: ${theme.fontColor};
   }
-`;
+
+  @media (max-width: 375px) {
+    height: 330px;
+  }
+`

@@ -1,43 +1,43 @@
-import React, { useState } from "react";
-import DayColumn from "./DayColumn";
-import styled, { css } from "styled-components";
-import MyGroupJoinModal from "./MyGroupJoinModal";
-import Alert from "../../../Components/Alert";
-import theme, { flexCenter } from "../../../Styles/Theme";
+import React, { useState } from 'react'
+import DayColumn from './DayColumn'
+import styled, { css } from 'styled-components'
+import MyGroupJoinModal from './MyGroupJoinModal'
+import Alert from '../../../Components/Alert'
+import theme, { flexCenter } from '../../../Styles/Theme'
 
 function PostsOfTheWeek({ dayPosts, isGroupJoined, excuteFunction }) {
-  const [isActiveAlert, setActiveAlert] = useState(false);
+  const [isActiveAlert, setActiveAlert] = useState(false)
 
   return (
     <Wrap>
       {isActiveAlert && (
         <Alert
           setActiveAlert={setActiveAlert}
-          alertMessage={"치킨계에 가입하시겠습니까?"}
+          alertMessage={'치킨계에 가입하시겠습니까?'}
           excuteFunction={excuteFunction}
-          submitBtn={"가입"}
-          closeBtn={"취소"}
+          submitBtn={'가입'}
+          closeBtn={'취소'}
         />
       )}
       {!isGroupJoined && <MyGroupJoinModal setActiveAlert={setActiveAlert} />}
       <Container isGroupJoined={isGroupJoined}>
         <DayColumns>
           {Object.keys(dayPosts).map((day, i) => {
-            return <DayColumn day={day} dayPosts={dayPosts} key={i} />;
+            return <DayColumn day={day} dayPosts={dayPosts} key={i} />
           })}
         </DayColumns>
       </Container>
       {!isGroupJoined && <ModalBackground />}
     </Wrap>
-  );
+  )
 }
 
-export default PostsOfTheWeek;
+export default PostsOfTheWeek
 
 const Wrap = styled.div`
   position: relative;
   ${flexCenter};
-`;
+`
 
 const Container = styled.div`
   height: 560px;
@@ -57,7 +57,11 @@ const Container = styled.div`
     css`
       filter: blur(4px);
     `}
-`;
+
+  @media (max-width: 375px) {
+    box-shadow: none;
+  }
+`
 
 const DayColumns = styled.div`
   display: flex;
@@ -69,7 +73,7 @@ const DayColumns = styled.div`
     background: ${theme.yellow};
     border-radius: 10px;
   }
-`;
+`
 
 const ModalBackground = styled.div`
   width: 101%;
@@ -79,4 +83,4 @@ const ModalBackground = styled.div`
   background-color: ${theme.white};
   opacity: 0.5;
   z-index: 1;
-`;
+`

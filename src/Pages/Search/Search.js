@@ -82,17 +82,30 @@ const Search = () => {
   return (
     <>
       <SearchWrap>
-        <InputTheme width={650} value={keyword} handleType={setKeyword} size={45} />
+        <InputTheme
+          width={window.innerWidth > 375 ? 650 : 300}
+          value={keyword}
+          handleType={setKeyword}
+          size={45}
+        />
       </SearchWrap>
       <PostWrap>
         {posts.length && keyword
           ? posts.map((post) => (
               <>
-                <Card post={post} width={650} space={20} key={post.id} search={true} />
+                <Card
+                  post={post}
+                  width={650}
+                  space={20}
+                  key={post.id}
+                  search={true}
+                />
               </>
             ))
           : searchingStatus(keyword, isSearching)}
-        {!!posts.length && <div ref={paginationRef} style={{ height: '10px' }} />}
+        {!!posts.length && (
+          <div ref={paginationRef} style={{ height: '10px' }} />
+        )}
       </PostWrap>
     </>
   )

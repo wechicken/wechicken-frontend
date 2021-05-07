@@ -1,23 +1,23 @@
-import React from "react";
-import styled from "styled-components";
-import theme from "../../Styles/Theme";
+import React from 'react'
+import styled from 'styled-components'
+import theme from '../../Styles/Theme'
 
 function CelebratingModal({ celebratingMessage }) {
   return (
     <Container>
       <CelebratingImg>
-        <div className="firework" />
-        <div className="beer" />
-        <div className="firework" />
+        <div className='firework' />
+        <div className='beer' />
+        <div className='firework' />
       </CelebratingImg>
       <CelebratingText>
         <span>{celebratingMessage}</span>
       </CelebratingText>
     </Container>
-  );
+  )
 }
 
-export default CelebratingModal;
+export default CelebratingModal
 
 const Container = styled.div`
   display: flex;
@@ -33,7 +33,11 @@ const Container = styled.div`
   box-shadow: -14px -14px 20px rgba(0, 0, 0, 0.02),
     14px 14px 20px rgba(0, 0, 0, 0.05);
   z-index: 99;
-`;
+
+  @media (max-width: 375px) {
+    width: 300px;
+  }
+`
 
 const CelebratingImg = styled.div`
   padding: 60px;
@@ -44,7 +48,7 @@ const CelebratingImg = styled.div`
     width: 100px;
     height: 100px;
     margin-top: 30px;
-    background: url("/Images/firework.png");
+    background: url('/Images/firework.png');
     background-size: contain;
     background-repeat: no-repeat;
     animation: blink-animation 0.4s steps(4, start) infinite;
@@ -62,11 +66,11 @@ const CelebratingImg = styled.div`
   .beer {
     width: 130px;
     height: 130px;
-    background: url("/Images/beer.png");
+    background: url('/Images/beer.png');
     background-size: contain;
     background-repeat: no-repeat;
   }
-`;
+`
 
 const CelebratingText = styled.div`
   font-size: 18px;
@@ -74,4 +78,4 @@ const CelebratingText = styled.div`
   text-align: center;
   line-height: 27px;
   color: ${theme.orange};
-`;
+`
