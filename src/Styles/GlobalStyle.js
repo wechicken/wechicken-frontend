@@ -1,6 +1,6 @@
-import { createGlobalStyle } from "styled-components";
-import reset from "styled-reset";
-import theme from "../Styles/Theme";
+import { createGlobalStyle } from 'styled-components'
+import reset from 'styled-reset'
+import theme from '../Styles/Theme'
 
 const GlobalStyles = createGlobalStyle`
     ${reset}
@@ -12,6 +12,11 @@ const GlobalStyles = createGlobalStyle`
 
 	    font-family: ${theme.fontContent};
     }
-`;
 
-export default GlobalStyles;
+    button {
+      border: none;
+  		outline: none;
+    }
+`
+
+export default GlobalStyles

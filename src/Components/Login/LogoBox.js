@@ -1,17 +1,17 @@
-import React from "react";
-import styled from "styled-components";
-import theme, { flexCenter } from "../../../src/Styles/Theme";
+import React from 'react'
+import styled from 'styled-components'
+import theme, { flexCenter } from '../../../src/Styles/Theme'
 
 const LogoBox = () => {
   return (
     <Container>
-      <img className="logoImage" alt="logo" src="/Images/logo.png"></img>
+      <img className='logoImage' alt='logo' src='/Images/logo.png'></img>
       <span>>wechicken</span>
     </Container>
-  );
-};
+  )
+}
 
-export default LogoBox;
+export default LogoBox
 
 const Container = styled.div`
   width: 50%;
@@ -31,4 +31,11 @@ const Container = styled.div`
     line-height: 24px;
     color: #1a202c;
   }
-`;
+
+  @media (max-width: 375px) {
+    .logoImage {
+      width: 100px;
+      height: 100px;
+    }
+  }
+`
